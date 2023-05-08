@@ -14,8 +14,24 @@ import Services from "./components/Services";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import RootReducer from "./reducers/RootReducer";
+import storage from "redux-persist/lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
 
-const store = configureStore({ reducer: RootReducer, middleware: [thunk] });
+// const store = configureStore({ reducer: RootReducer, middleware: [thunk] });
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, RootReducer);
+
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: [thunk],
+});
+
+const persistor = persistStore(store);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
