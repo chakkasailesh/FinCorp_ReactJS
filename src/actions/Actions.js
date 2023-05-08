@@ -7,9 +7,10 @@ const login = (isAuthenticated) => {
   };
 };
 
-const logout = () => {
+const logout = (isAuthenticated) => {
   return {
     type: "LOGOUT",
+    isAuthenticated,
   };
 };
 
@@ -29,10 +30,4 @@ const loginValidate = (data) => {
   };
 };
 
-const logoutValidate = () => {
-  return (dispatch) => {
-    dispatch(logout());
-  };
-};
-
-export { login, loginValidate, logout, logoutValidate };
+export { login, loginValidate, logout };

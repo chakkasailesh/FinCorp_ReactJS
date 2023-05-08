@@ -7,7 +7,7 @@ const LoginReducer = (state = { isAuthed: false }, action) => {
   } else if (action.type === "LOGOUT") {
     return {
       ...state,
-      isAuthed: false,
+      isAuthed: action.isAuthenticated,
     };
   }
   return state;

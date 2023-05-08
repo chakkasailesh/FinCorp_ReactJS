@@ -1,14 +1,14 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
-// import { logout } from "../actions/Actions";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../actions/Actions";
 
 const Header = () => {
-  /*const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleClick = () => {
-    window.location.reload(false);
-    dispatch(logout);
-  };*/
+    dispatch(logout(false));
+  };
   const authenticated = useSelector((state) => state.LoginReducer.isAuthed);
   return (
     <>
@@ -55,7 +55,14 @@ const Header = () => {
           </li>
           <li>
             {authenticated ? (
-              <span className="navbar-brand nav-link">Logout</span>
+              <a
+                role="button"
+                href="#"
+                className="navbar-brand nav-link"
+                onClick={handleClick}
+              >
+                Logout
+              </a>
             ) : (
               <Link to="/" className="navbar-brand nav-link">
                 Login
