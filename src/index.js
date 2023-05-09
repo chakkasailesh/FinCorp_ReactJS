@@ -1,9 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import thunk from "redux-thunk";
-import { configureStore } from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
 import AboutUs from "./components/AboutUs";
@@ -13,27 +10,12 @@ import EMICalculator from "./components/EMICalculator";
 import Services from "./components/Services";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
-import RootReducer from "./reducers/RootReducer";
-import storage from "redux-persist/lib/storage";
-import { persistReducer } from "redux-persist";
-
-// const store = configureStore({ reducer: RootReducer, middleware: [thunk] });
-const persistConfig = {
-  key: "root",
-  storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, RootReducer);
-
-const store = configureStore({
-  reducer: persistedReducer,
-  middleware: [thunk],
-});
+import { UserContext } from "./components/UserContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <UserContext>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
@@ -46,7 +28,7 @@ root.render(
           </Route>
         </Routes>
       </BrowserRouter>
-    </Provider>
+    </UserContext>
   </React.StrictMode>
 );
 

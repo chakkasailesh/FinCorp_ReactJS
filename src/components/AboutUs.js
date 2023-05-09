@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import bgimage from "../images/bgimage.jpg";
+import { context } from "./UserContext";
 
 const AboutUs = () => {
-  const authenticated = useSelector((state) => state.LoginReducer.isAuthed);
+  const { state } = useContext(context);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!authenticated) {
+    if (!state.isAuthenticated) {
       navigate("/");
     }
   });

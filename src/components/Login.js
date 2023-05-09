@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import validateFiled from "../validations/validateField";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { loginValidate } from "../actions/Actions";
+import { useContext } from "react";
+import { context } from "./UserContext";
+import axios from "axios";
 
 const Login = () => {
   const initialForm = {
@@ -12,11 +13,10 @@ const Login = () => {
   };
   const [formData, setFormData] = useState(initialForm);
   const [formErrors, setFormErrors] = useState(initialForm);
-  const dispatch = useDispatch();
-  const authenticated = useSelector((state) => state.LoginReducer.isAuthed);
+  const { state, setState } = useContext(context);
   let navigate = useNavigate();
   useEffect(() => {
-    if (authenticated) {
+    if (state.isAuthenticated) {
       navigate("/aboutus");
     }
   });
@@ -26,7 +26,7 @@ const Login = () => {
     setFormData({ ...formData, [name]: value, loginAttempted: false });
     setFormErrors({ ...formErrors, [name]: error });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = {};
     Object.keys(formData).forEach(
@@ -36,7 +36,19 @@ const Login = () => {
     if (Object.values(errors).some((error) => error)) {
       return;
     }
-    dispatch(loginValidate(formData));
+    axios.get("http://localhost:4000/members").then((res) => {
+      let value = res.data;
+      console.log(value);
+      let result = value.find(
+        (val) =>
+          val.userID === formData.username && val.password === formData.password
+      );
+      if (result) {
+        setState({ ...state, isAuthenticated: true });
+      } else {
+        setState({ ...state, isAuthenticated: false });
+      }
+    });
     setFormData({ ...formData, loginAttempted: true });
   };
   return (
@@ -72,7 +84,7 @@ const Login = () => {
               <span className="error text-danger">{formErrors.password}</span>
             )}
           </div>
-          {!authenticated && formData.loginAttempted && (
+          {!state.isAuthenticated && formData.loginAttempted && (
             <div className="error text-danger">Invalid Credentials</div>
           )}
           <button type="submit" className="btn btn-primary">

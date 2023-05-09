@@ -1,15 +1,12 @@
-import React from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../actions/Actions";
+import React, { useContext } from "react";
+import { Link, Outlet } from "react-router-dom";
+import { context } from "./UserContext";
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { state, setState } = useContext(context);
   const handleClick = () => {
-    dispatch(logout(false));
+    setState({ ...state, isAuthenticated: false });
   };
-  const authenticated = useSelector((state) => state.LoginReducer.isAuthed);
   return (
     <>
       <nav className="navbar navbar-expand-md bg-dark navbar-dark">
@@ -54,7 +51,7 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            {authenticated ? (
+            {state.isAuthenticated ? (
               <a
                 role="button"
                 href="#"
