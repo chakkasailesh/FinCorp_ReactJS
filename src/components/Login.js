@@ -41,7 +41,7 @@ const Login = () => {
   };
   return (
     <div>
-      <h2>Login</h2>
+      <h2 style={{ textAlign: "center" }}>Login</h2>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
